@@ -1,15 +1,13 @@
-# Dee & J's Business — V2.4 Admin Workflow
+# Dee & J's Business V2.5 — Project Spec
 
-Core workflow: Order -> Additional Orders -> Item Master -> Purchase List -> Procurement -> Delivery -> Profit -> Reports.
+## Core admin flow
+Order -> Additional Order -> Purchase List -> Actual Market Purchase -> Automatic Sales Invoice -> Delivery -> Profit/Analytics.
 
-## Order behavior
-A manual/phone order can create a new order or attach item lines to an existing order. Attached lines are marked as additional and can carry remarks. Totals are rolled into the existing order.
+## Item categories
+Meat; Poultry; Fish & Seafood; Vegetables; Fruits; Eggs & Dairy; Groceries; Cooking Oil & Condiments; Beverages; Food Containers & Packaging; Disposable Tableware; Kitchen Supplies; Cleaning & Sanitation; Trash Bags; Tissue & Paper Products; Medical & PPE; Medical Supplies; Office Supplies; Household & Utility Supplies; Hardware & Maintenance; Other / Uncategorized.
 
-## Item Master
-Stores reusable product name, unit, selling price and current purchase cost. Market cost can be updated as prices change.
+## Purchase workflow
+Purchase List is optimized for compact 80 mm printing. Each line shows item, quantity, unit and a field for actual market unit price. Additional items are tagged automatically. Finalization stores actual quantity/cost, updates latest product cost, recalculates order COGS/profit, and creates the Sales Invoice.
 
-## Purchase List
-Select an order to generate an A4 market buying list containing item, quantity and unit. Buyer-facing blanks are included for market price, actual quantity and notes. Internal markup is not printed.
-
-## Storage
-Static HTML/CSS/JS, localStorage, GitHub Pages compatible. Shared multi-device sync is intentionally deferred.
+## Architecture
+Static HTML/CSS/JavaScript, localStorage persistence, no build framework. Keep GitHub Pages compatibility and portability for future developers/AI.
