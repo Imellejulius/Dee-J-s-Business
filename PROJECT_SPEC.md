@@ -1,36 +1,15 @@
-# Dee & J's V2.3 Project Handoff
+# Dee & J's Business — V2.4 Admin Workflow
 
-## Goal
-Mobile-first hospital delivery management web app for Dee & J's Consumer Goods Trading. Must remain usable on iPhone, Android, tablet and desktop without horizontal form overlap.
+Core workflow: Order -> Additional Orders -> Item Master -> Purchase List -> Procurement -> Delivery -> Profit -> Reports.
 
-## Stack
-Static HTML/CSS/vanilla JS. LocalStorage persistence. PWA manifest/service worker. No build step. No paid dependency.
+## Order behavior
+A manual/phone order can create a new order or attach item lines to an existing order. Attached lines are marked as additional and can carry remarks. Totals are rolled into the existing order.
 
-## Core data
-`deej_v2`: orders, procurement, products, workers, expenses.
-`deej_v22_settings`: business settings.
-`deej_v22_invoice`: current invoice line items.
-`deej_v22_receiving`: current receiving line items.
-`deej_v22_vehicle`: vehicle acquisition assumptions.
+## Item Master
+Stores reusable product name, unit, selling price and current purchase cost. Market cost can be updated as prices change.
 
-## UX rules
-- <=600px: forms are single-column, dashboard cards max 2 columns, fixed 5-button bottom navigation.
-- Tables may scroll horizontally inside their own card; page itself must not overflow horizontally.
-- A4 documents must print cleanly with controls/navigation hidden.
-- Keep D&J navy/green/white branding and `app-icon.png`.
+## Purchase List
+Select an order to generate an A4 market buying list containing item, quantity and unit. Buyer-facing blanks are included for market price, actual quantity and notes. Internal markup is not printed.
 
-## Pricing formula
-Required sales = delivery COGS + other delivery expenses + target profit.
-Markup on COGS = (required sales - COGS) / COGS.
-Suggested product price allocates the required-sales factor proportionally to each product's purchase cost.
-
-## Next logical version
-V2.3 Cloud Sync: use a free-tier backend only if the owner chooses it. Add authentication, shared business workspace, roles (Owner/Admin/Worker), conflict-safe CRUD, backup/import, and migration from localStorage. Keep a local/offline mode.
-
-
-## V2.3 additions
-- Admin dashboard sales mix pie chart and sales/profit trend chart with 30-day, 3-month and 1-year views.
-- Manual / Phone Order workflow for orders received by call, text, chat or in person.
-- Multi-item order entry using the Product master, quantities, units and adjustable selling price.
-- Emergency-order toggle with configurable emergency markup percentage.
-- Manual orders feed the existing order history, dashboard KPIs, analytics and profit calculations.
+## Storage
+Static HTML/CSS/JS, localStorage, GitHub Pages compatible. Shared multi-device sync is intentionally deferred.
