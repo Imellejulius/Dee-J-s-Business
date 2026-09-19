@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0b3558">
+<title>Dee & J's Business V4</title>
+<style>
+:root{--navy:#0b3558;--green:#087d4d;--blue:#0a84ff;--bg:#f3f6f8;--card:#fff;--line:#dbe3e9;--muted:#68798a;--danger:#c43d3d;--warn:#a86b00}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17212b}
+header{background:var(--navy);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 18px 18px;position:sticky;top:0;z-index:8}
+header b{font-size:20px} header small{display:block;color:#cbd8e4;margin-top:3px}
+main{padding:18px 14px 105px;max-width:760px;margin:auto}.page{display:none}.page.active{display:block}
+h1{font-size:29px;margin:4px 0 16px} h2{font-size:20px;margin:4px 0 14px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin:0 0 14px;box-shadow:0 2px 8px #001b2f0a}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{padding:14px;border:1px solid var(--line);border-radius:15px;background:#fff}.metric small{color:var(--muted);display:block}.metric strong{font-size:25px}
+button,.btn{border:0;border-radius:12px;padding:12px 14px;font-weight:700;font-size:15px;background:#eaf0f4;color:#16202a}button.primary{background:var(--navy);color:#fff}button.green{background:var(--green);color:#fff}button.danger{background:#fff0f0;color:var(--danger)}
+input,select,textarea{width:100%;border:1px solid #cbd7df;border-radius:11px;padding:12px;font-size:16px;background:#fff;margin:5px 0 10px}label{font-size:13px;font-weight:700;color:#526171}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row>*{flex:1}.tabs{display:flex;gap:7px;overflow:auto;padding-bottom:10px}.tabs button{white-space:nowrap}.tabs button.active{background:var(--navy);color:#fff}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:var(--navy);padding:8px 7px calc(8px + env(safe-area-inset-bottom));display:flex;z-index:10;border-radius:22px 22px 0 0}
+.bottom button{flex:1;background:transparent;color:#e5eef5;padding:8px 2px;font-size:11px}.bottom button.active{background:var(--green);color:#fff}.bottom span{display:block;font-size:20px;margin-bottom:2px}
+.item{border-top:1px solid #edf1f4;padding:12px 0}.item:first-child{border-top:0}.badge{display:inline-block;border-radius:999px;padding:5px 9px;background:#edf3f7;font-size:12px;font-weight:700}.good{background:#e5f6ec;color:#087747}.bad{background:#fdeaea;color:#a52c2c}.partial{background:#fff2cf;color:#8b5b00}
+details{background:#fff;border:1px solid var(--line);border-radius:15px;margin-bottom:10px}summary{padding:16px;font-weight:800;cursor:pointer}details>div{padding:0 16px 16px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:9px 5px;border-bottom:1px solid #e8edf1}
+.hidden{display:none!important}.right{text-align:right}.muted{color:var(--muted)}.notice{background:#fff7da;border:1px solid #edd27a;padding:12px;border-radius:12px}.scroll{overflow:auto}
+@media(max-width:430px){.grid{grid-template-columns:1fr 1fr}h1{font-size:27px}.card{padding:15px}.desktop-only{display:none}}
+@media print{header,.bottom,.no-print{display:none!important}body{background:#fff}main{padding:0}.page{display:none!important}.printable{display:block!important}.card{box-shadow:none;border:0}}
+</style>
+</head>
+<body>
+<header><b>Dee & J's Consumer Goods Trading</b><small>Business Operations Management • V4</small></header>
+<main>
+<section id="home" class="page active">
+<h1>Dashboard</h1>
+<div class="grid">
+<div class="metric"><small>Receivables</small><strong id="mRec">₱0</strong></div>
+<div class="metric"><small>Supplier Payables</small><strong id="mPay">₱0</strong></div>
+<div class="metric"><small>Credit Cards Due</small><strong id="mCards">₱0</strong></div>
+<div class="metric"><small>Active Orders</small><strong id="mOrders">0</strong></div>
+</div>
+<div class="card"><h2>Quick actions</h2><div class="row"><button class="primary" onclick="go('orders');newOrder()">＋ New Order</button><button onclick="go('procurement')">🛒 Procurement</button><button onclick="go('payments')">₱ Payments</button></div></div>
+<div class="card"><h2>Due & attention</h2><div id="dueList" class="muted">No unpaid items yet.</div></div>
+</section>
+
+<section id="orders" class="page">
+<h1>Orders</h1>
+<div class="tabs"><button class="active" onclick="showOrderTab('activeOrders',this)">Active Orders</button><button onclick="showOrderTab('orderHistory',this)">Order History</button></div>
+<div id="activeOrders">
+<div class="card">
+<h2>New / Edit Order</h2>
+<div class="row"><div><label>Client</label><select id="oClient"></select></div><div><label>Order #</label><input id="oNo" readonly></div></div>
+<div class="row"><div><label>Order date</label><input id="oDate" type="date"></div><div><label>Source</label><select id="oSource"><option>Regular order</option><option>Manual / Phone — Additional Order</option></select></div></div>
+<label>Items</label><div id="orderItems"></div><button onclick="addOrderItem()">＋ Add Item</button>
+<div class="row" style="margin-top:12px"><button class="primary" onclick="saveOrder()">Save Active Order</button><button onclick="newOrder()">Clear</button></div>
+</div>
+<div class="card"><h2>Active Orders</h2><div id="activeList" class="muted">No active orders.</div></div>
+</div>
+<div id="orderHistory" class="hidden"><div class="card"><input id="histSearch" placeholder="Search client, date or order #" oninput="renderOrders()"><div id="historyList"></div></div></div>
+</section>
+
+<section id="procurement" class="page">
+<h1>Procurement</h1>
+<div class="tabs" id="pTabs">
+<button class="active" onclick="pTab('pProc',this)">Procurement</button><button onclick="pTab('pExpense',this)">Expense Calculator</button><button onclick="pTab('pList',this)">List</button><button onclick="pTab('pReceive',this)">Receiving</button><button onclick="pTab('pTrack',this)">Order Tracker</button>
+</div>
+<div id="pProc" class="pPane">
+<div class="card"><h2>Procurement setup</h2>
+<label>Select Active Order</label><select id="pOrder" onchange="loadProcOrder()"></select>
+<div class="row"><div><label>Payment Method</label><select id="pMethod" onchange="paymentFields()"><option>Cash</option><option>GCash</option><option>Credit Card</option><option>Supplier Credit / Pay Later</option></select></div><div id="cardPickWrap" class="hidden"><label>Credit Card</label><select id="pCard"></select></div></div>
+<div class="row"><div><label>Supplier</label><input id="pSupplier"></div><div><label>Cash / Amount Issued</label><input id="pIssued" type="number" min="0"></div></div>
+<div id="gcashWrap" class="hidden"><label>GCash Reference #</label><input id="pGcash"></div>
+<button class="primary" onclick="saveProcMeta()">Save Procurement Setup</button></div>
+</div>
+<div id="pExpense" class="pPane hidden"><div class="card"><h2>Expense Calculator</h2><div class="grid" id="expenseFields"></div><button class="primary" onclick="calcExpenses()">Calculate</button><div id="expenseResult" class="notice" style="margin-top:12px">Enter expenses to calculate total cost and cash balance.</div></div></div>
+<div id="pList" class="pPane hidden"><div class="card"><h2>Procurement List</h2><p class="muted">Purchased → Receiving. Not Available → next client order. Partial → purchased quantity to Receiving; balance carried over.</p><div id="procList"></div></div></div>
+<div id="pReceive" class="pPane hidden"><div class="card printable"><h2>Receiving Report (A4)</h2><div id="receiveHead" class="muted"></div><div id="receiveList"></div><br><div class="row"><div>Prepared / Delivered by:<br><br>_____________________</div><div>Received by / Officer in Charge:<br><br>_____________________</div></div><br><div class="no-print"><button class="green" onclick="window.print()">🖨 Print Client + Business Copy</button></div></div></div>
+<div id="pTrack" class="pPane hidden"><div class="card"><h2>Order Tracker</h2><div id="tracker"></div></div></div>
+</section>
+
+<section id="payments" class="page">
+<h1>Payments & Receivables</h1>
+<div class="grid"><div class="metric"><small>Total Receivables</small><strong id="rTotal">₱0</strong></div><div class="metric"><small>Collected</small><strong id="rCollected">₱0</strong></div></div>
+<div class="card"><h2>Record Client Payment</h2><label>Order / Invoice</label><select id="payOrder"></select><div class="row"><div><label>Amount</label><input id="payAmount" type="number"></div><div><label>Method</label><select id="payMethod"><option>Cash</option><option>Bank Transfer</option><option>GCash</option><option>Check</option><option>Credit Card</option><option>Other</option></select></div></div><label>Reference / Notes</label><input id="payRef"><button class="primary" onclick="recordPayment()">Record Payment</button></div>
+<div class="card"><h2>Payment Records</h2><div id="paymentList"></div></div>
+</section>
+
+<section id="more" class="page">
+<h1>More</h1>
+<details><summary>🖨 Printable Documents & Reports</summary><div>
+<button onclick="alert('Sales Invoice template will auto-fill from selected order and remains editable before printing.')">Sales Invoice (A4)</button>
+<button onclick="go('procurement');pTab('pReceive',document.querySelectorAll('#pTabs button')[3])">Receiving Report (A4)</button>
+<button onclick="window.print()">Procurement / Product List (A4)</button>
+<button onclick="alert('Editable Price List A4 template')">Price List (A4)</button>
+<button onclick="alert('Editable Expense Report A4 template')">Expense Report (A4)</button>
+<button onclick="alert('Editable Delivery Checklist A4 template')">Delivery Checklist (A4)</button>
+<hr><h2>Sales Report (A4)</h2><div class="row"><div><label>From</label><input type="date" id="srFrom"></div><div><label>To</label><input type="date" id="srTo"></div></div><button class="green" onclick="salesReport()">Generate / Print Sales Report</button>
+</div></details>
+<details><summary>💳 Credit Cards</summary><div><p class="muted">Store nickname and last 4 digits only — never CVV/PIN.</p><div class="row"><input id="ccName" placeholder="Card nickname / bank"><input id="ccLast" maxlength="4" placeholder="Last 4"></div><div class="row"><input id="ccDue" type="date"><input id="ccBal" type="number" placeholder="Outstanding balance"></div><button class="primary" onclick="addCard()">Add / Update Card</button><div id="cardList"></div></div></details>
+<details><summary>🧾 Supplier Payables</summary><div><div id="payablesList"></div></div></details>
+<details><summary>🚐 Vehicle Acquisition Cost</summary><div id="vehicleBox"></div></details>
+<details><summary>🏢 Clients</summary><div><input id="clientName" placeholder="Business / client name"><input id="clientContact" placeholder="Contact / details"><button class="primary" onclick="addClient()">Add Client</button><div id="clientList"></div></div></details>
+<details><summary>📦 Products & Pricing</summary><div><p>Product/pricing master list can be expanded here as the next module.</p></div></details>
+<details><summary>⚙️ Settings</summary><div><label>Default vehicle reserve per delivery</label><input id="setVehicle" type="number"><label>Default target profit per delivery</label><input id="setProfit" type="number"><button class="primary" onclick="saveSettings()">Save Settings</button></div></details>
+</section>
+</main>
+
+<nav class="bottom">
+<button class="active" data-go="home" onclick="go('home',this)"><span>⌂</span>Home</button>
+<button data-go="orders" onclick="go('orders',this)"><span>▤</span>Orders</button>
+<button data-go="procurement" onclick="go('procurement',this)"><span>🛒</span>Procurement</button>
+<button data-go="payments" onclick="go('payments',this)"><span>₱</span>Payments</button>
+<button data-go="more" onclick="go('more',this)"><span>•••</span>More</button>
+</nav>
+<script>
+const K='djv4';let db=JSON.parse(localStorage.getItem(K)||'null')||{clients:[],orders:[],cards:[],payments:[],payables:[],settings:{vehicle:700,profit:5000},seq:126};
+const peso=n=>'₱'+Number(n||0).toLocaleString('en-PH',{maximumFractionDigits:2});
+const today=()=>new Date().toISOString().slice(0,10); const save=()=>{localStorage.setItem(K,JSON.stringify(db));refresh()};
+function go(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.toggle('active',x.dataset.go===id));window.scrollTo(0,0);refresh()}
+function showOrderTab(id,b){document.querySelectorAll('#orders .tabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById('activeOrders').classList.toggle('hidden',id!=='activeOrders');document.getElementById('orderHistory').classList.toggle('hidden',id!=='orderHistory')}
+function pTab(id,b){document.querySelectorAll('.pPane').forEach(x=>x.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('#pTabs button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');refresh()}
+function newOrder(){oNo.value='DJ-'+new Date().getFullYear()+'-'+String(db.seq).padStart(5,'0');oDate.value=today();orderItems.innerHTML='';addOrderItem()}
+function addOrderItem(name='',qty='',unit='pc',price=''){let d=document.createElement('div');d.className='row item';d.innerHTML=`<input placeholder="Product" value="${name}"><input type="number" step="0.01" placeholder="Qty" value="${qty}"><input placeholder="Unit" value="${unit}"><input type="number" step="0.01" placeholder="Selling price/unit" value="${price}"><button class="danger" onclick="this.parentElement.remove()">×</button>`;orderItems.appendChild(d)}
+function saveOrder(){if(!oClient.value)return alert('Add/select a client first.');let items=[...orderItems.children].map(r=>{let i=r.querySelectorAll('input');return{name:i[0].value,qty:+i[1].value,unit:i[2].value,price:+i[3].value,status:'Pending',purchased:0}}).filter(x=>x.name&&x.qty);if(!items.length)return alert('Add at least one item.');db.orders.push({id:oNo.value,client:oClient.value,date:oDate.value,source:oSource.value,items,status:'Active',sales:items.reduce((s,x)=>s+x.qty*x.price,0),receiving:[],expenses:{},proc:{}});db.seq++;save();newOrder()}
+function renderOrders(){let active=db.orders.filter(o=>o.status!=='Delivered');activeList.innerHTML=active.length?active.map(o=>`<div class="item"><b>${o.id}</b> · ${o.client}<br><span class="badge">${o.status}</span> ${o.date} · ${peso(o.sales)}<div class="row"><button onclick="setStatus('${o.id}','Procurement')">Procurement</button><button onclick="setStatus('${o.id}','Delivered')">Delivered</button><button class="danger" onclick="delOrder('${o.id}')">Delete</button></div></div>`).join(''):'No active orders.';let q=(histSearch?.value||'').toLowerCase();let h=db.orders.filter(o=>o.status==='Delivered'&&(`${o.id} ${o.client} ${o.date}`).toLowerCase().includes(q)).reverse();historyList.innerHTML=h.map(o=>`<div class="item"><b>${o.id}</b> · ${o.client} · ${o.date} · ${peso(o.sales)}</div>`).join('')||'No completed orders.'}
+function setStatus(id,s){let o=db.orders.find(x=>x.id===id);o.status=s;save()} function delOrder(id){if(confirm('Delete this active order?')){db.orders=db.orders.filter(x=>x.id!==id);save()}}
+function loadProcOrder(){let o=db.orders.find(x=>x.id===pOrder.value);if(!o)return;renderProcList(o)}
+function saveProcMeta(){let o=db.orders.find(x=>x.id===pOrder.value);if(!o)return alert('Select an active order.');o.proc={method:pMethod.value,card:pCard.value,supplier:pSupplier.value,issued:+pIssued.value,gcash:pGcash.value};o.status='Procurement';if(pMethod.value.includes('Supplier Credit'))db.payables.push({order:o.id,supplier:pSupplier.value,amount:0,due:'',status:'Unpaid'});save()}
+function paymentFields(){cardPickWrap.classList.toggle('hidden',pMethod.value!=='Credit Card');gcashWrap.classList.toggle('hidden',pMethod.value!=='GCash')}
+function renderProcList(o){procList.innerHTML=o.items.map((x,i)=>`<div class="item"><b>${x.name}</b> — ${x.qty} ${x.unit}<br><span class="badge ${x.status==='Purchased'?'good':x.status==='Partial'?'partial':x.status==='Not Available'?'bad':''}">${x.status}</span><div class="row"><button onclick="markItem('${o.id}',${i},'Purchased')">✓ Purchased</button><button onclick="markItem('${o.id}',${i},'Partial')">◐ Partial</button><button onclick="markItem('${o.id}',${i},'Not Available')">✕ Not Available</button></div></div>`).join('')}
+function markItem(id,i,s){let o=db.orders.find(x=>x.id===id),x=o.items[i];if(s==='Purchased'){x.status=s;x.purchased=x.qty}else if(s==='Not Available'){x.status=s;x.purchased=0}else{let n=prompt(`Ordered: ${x.qty} ${x.unit}\nHow many were purchased?`,x.purchased||'');if(n===null)return;n=+n;if(n<0||n>x.qty)return alert('Purchased quantity must be between 0 and ordered quantity.');x.status='Partial';x.purchased=n}o.receiving=o.items.filter(z=>z.purchased>0).map(z=>({...z,qty:z.purchased}));save();renderProcList(o)}
+function calcExpenses(){let vals=[...document.querySelectorAll('#expenseFields input')].map(x=>+x.value||0),total=vals.reduce((a,b)=>a+b,0),o=db.orders.find(x=>x.id===pOrder.value),issued=o?.proc?.issued||0;expenseResult.innerHTML=`Total operating/procurement cost: <b>${peso(total)}</b><br>Cash balance/return: <b>${peso(issued-total)}</b>`;if(o){o.expenses={total};save()}}
+function recordPayment(){let o=db.orders.find(x=>x.id===payOrder.value);if(!o)return;db.payments.push({order:o.id,client:o.client,amount:+payAmount.value,method:payMethod.value,ref:payRef.value,date:today()});save()}
+function addCard(){if(!ccName.value)return;db.cards.push({name:ccName.value,last:ccLast.value,due:ccDue.value,balance:+ccBal.value});save();ccName.value=ccLast.value=ccDue.value=ccBal.value=''}
+function addClient(){if(!clientName.value)return;db.clients.push({name:clientName.value,contact:clientContact.value});save();clientName.value=clientContact.value=''}
+function saveSettings(){db.settings.vehicle=+setVehicle.value;db.settings.profit=+setProfit.value;save()}
+function salesReport(){let f=srFrom.value||'0000',t=srTo.value||'9999',os=db.orders.filter(o=>o.date>=f&&o.date<=t&&o.status==='Delivered');alert(`Sales Report ${f} to ${t}\nCompleted sales: ${peso(os.reduce((s,o)=>s+o.sales,0))}\nOrders: ${os.length}\n\nUse Print in Safari for PDF/A4.`);window.print()}
+function refresh(){
+oClient.innerHTML='<option value="">Select client</option>'+db.clients.map(c=>`<option>${c.name}</option>`).join('');
+pCard.innerHTML='<option value="">Select card</option>'+db.cards.map(c=>`<option>${c.name} •••• ${c.last}</option>`).join('');
+let active=db.orders.filter(o=>o.status!=='Delivered');pOrder.innerHTML='<option value="">Select active order</option>'+active.map(o=>`<option value="${o.id}">${o.id} — ${o.client}</option>`).join('');
+payOrder.innerHTML='<option value="">Select order/invoice</option>'+db.orders.map(o=>`<option value="${o.id}">${o.id} — ${o.client}</option>`).join('');
+let paid=db.payments.reduce((s,x)=>s+x.amount,0),sales=db.orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+o.sales,0),rec=Math.max(0,sales-paid),pay=db.payables.filter(x=>x.status!=='Paid').reduce((s,x)=>s+x.amount,0),cards=db.cards.reduce((s,x)=>s+x.balance,0);
+mRec.textContent=rTotal.textContent=peso(rec);mPay.textContent=peso(pay);mCards.textContent=peso(cards);mOrders.textContent=active.length;rCollected.textContent=peso(paid);
+dueList.innerHTML=[...db.cards.filter(c=>c.balance>0).map(c=>`${c.name} •••• ${c.last}: ${peso(c.balance)} due ${c.due||'not set'}`),...db.payables.filter(p=>p.status!=='Paid').map(p=>`${p.supplier||'Supplier'}: ${peso(p.amount)} unpaid`)].join('<br>')||'No unpaid items yet.';
+paymentList.innerHTML=db.payments.slice().reverse().map(p=>`<div class="item"><b>${p.client}</b> · ${p.order}<br>${peso(p.amount)} via ${p.method} · ${p.date}</div>`).join('')||'No payments recorded.';
+cardList.innerHTML=db.cards.map((c,i)=>`<div class="item"><b>${c.name} •••• ${c.last}</b><br>${peso(c.balance)} · Due ${c.due||'not set'} <button onclick="let a=prompt('Payment amount');if(a){db.cards[${i}].balance=Math.max(0,db.cards[${i}].balance-(+a));save()}">Record Payment</button></div>`).join('');
+payablesList.innerHTML=db.payables.map((p,i)=>`<div class="item"><b>${p.supplier||'Supplier'}</b> · ${p.order}<br>${peso(p.amount)} · ${p.status} <button onclick="db.payables[${i}].status='Paid';save()">Mark Paid</button></div>`).join('')||'No supplier payables.';
+clientList.innerHTML=db.clients.map(c=>`<div class="item"><b>${c.name}</b><br><span class="muted">${c.contact||''}</span></div>`).join('')||'No clients yet.';
+setVehicle.value=db.settings.vehicle;setProfit.value=db.settings.profit;renderOrders();
+let o=db.orders.find(x=>x.id===pOrder.value);if(o){renderProcList(o);receiveHead.innerHTML=`<b>Dee & J's Consumer Goods Trading</b><br>Client: ${o.client}<br>Order: ${o.id} · Date: ${o.date}`;receiveList.innerHTML='<table><tr><th>Item</th><th>Qty</th><th>Unit</th></tr>'+o.receiving.map(x=>`<tr><td>${x.name}</td><td>${x.qty}</td><td>${x.unit}</td></tr>`).join('')+'</table>'}
+tracker.innerHTML=db.orders.map(o=>`<div class="item"><b>${o.client}</b> · ${o.id}<br><span class="badge">${o.status}</span> · ${o.items.length} items</div>`).join('')||'No orders.';
+}
+const ex=['Cost of Goods','Workers / Salary','Delivery Fuel','Procurement / Vehicle Fuel','Miscellaneous','Vehicle Maintenance Reserve','Vehicle Acquisition Allocation','Petty Allowance','Other Expenses'];expenseFields.innerHTML=ex.map((x,i)=>`<div><label>${x}</label><input type="number" min="0" step=".01" id="ex${i}"></div>`).join('');
+vehicleBox.innerHTML=`<div class="grid">${['Vehicle SRP','Down Payment','Loan Term (months)','Interest / Financing Cost','Chattel Mortgage','Comprehensive Insurance','CTPL','LTO / Registration','Dealer / Documentation Fees','Accessories / Modifications','Release / Delivery Fees','Other Hidden Charges'].map(x=>`<div><label>${x}</label><input type="number" class="veh"></div>`).join('')}</div><button class="primary" onclick="let v=[...document.querySelectorAll('.veh')].map(x=>+x.value||0);alert('Estimated acquisition/cash commitments entered: '+peso(v.reduce((a,b)=>a+b,0)))">Calculate True Acquisition Cost</button>`;
+newOrder();refresh();
+</script>
+</body></html>
