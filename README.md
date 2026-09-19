@@ -1,4 +1,4 @@
-# Dee & J's Business V2.2
+# Dee & J's Business V2.3
 
 A no-paid-dependency, local-first responsive web app for Dee & J's Consumer Goods Trading.
 
@@ -20,7 +20,15 @@ Create a free GitHub account/repository, upload all files in this folder to the 
 Any simple local web server can serve this folder. The app has no paid APIs or package dependencies.
 
 ## Data
-V2.2 is local-first and stores data in the browser's localStorage. Different phones do NOT sync yet. Export JSON backups from Settings. Clearing browser/site data can erase local records.
+V2.3 is local-first and stores data in the browser's localStorage. Different phones do NOT sync yet. Export JSON backups from Settings. Clearing browser/site data can erase local records.
 
 ## Continue with another AI / developer
 Give them this entire folder and `PROJECT_SPEC.md`. Everything is plain HTML/CSS/JavaScript; there is no build step, framework, API key, or paid dependency.
+
+
+## V2.3 additions
+- Admin dashboard sales mix pie chart and sales/profit trend chart with 30-day, 3-month and 1-year views.
+- Manual / Phone Order workflow for orders received by call, text, chat or in person.
+- Multi-item order entry using the Product master, quantities, units and adjustable selling price.
+- Emergency-order toggle with configurable emergency markup percentage.
+- Manual orders feed the existing order history, dashboard KPIs, analytics and profit calculations.

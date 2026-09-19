@@ -1,4 +1,4 @@
-# Dee & J's V2.2 Project Handoff
+# Dee & J's V2.3 Project Handoff
 
 ## Goal
 Mobile-first hospital delivery management web app for Dee & J's Consumer Goods Trading. Must remain usable on iPhone, Android, tablet and desktop without horizontal form overlap.
@@ -26,3 +26,11 @@ Suggested product price allocates the required-sales factor proportionally to ea
 
 ## Next logical version
 V2.3 Cloud Sync: use a free-tier backend only if the owner chooses it. Add authentication, shared business workspace, roles (Owner/Admin/Worker), conflict-safe CRUD, backup/import, and migration from localStorage. Keep a local/offline mode.
+
+
+## V2.3 additions
+- Admin dashboard sales mix pie chart and sales/profit trend chart with 30-day, 3-month and 1-year views.
+- Manual / Phone Order workflow for orders received by call, text, chat or in person.
+- Multi-item order entry using the Product master, quantities, units and adjustable selling price.
+- Emergency-order toggle with configurable emergency markup percentage.
+- Manual orders feed the existing order history, dashboard KPIs, analytics and profit calculations.
